@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form</title>
+	<link rel="stylesheet" href="assets/stylesheets/form.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<script src="assets/scripts/jquery-3.1.1.min.js"></script>
+	<script src="assets/scripts/form.js"></script>
+</head>
+<body>
+	<div class="internet-status">You are online</div>
+	<section class="container">
+	<h1>Registration</h1>
+		<form id="registration" method="post">
+
+			<label>UserID:</label>
+			<input type="text" name="userid" id="uid" required>
+			<p class="userid-help">Please enter your User id.</p>
+
+			<label>Password:</label>
+			<input type="password" name="password" id="pass" required>
+			<p class="pwd-help">
+				<progress class="pwd-help" id="pro" max="4" value="0">Strong</progress>
+				<div class="pwd-help" id="length"><img id="length-img" src="assets/images/cross.png"> Use 7 to 20 characters</div>
+				<div class="pwd-help" id="alpha"><img id="alpha-img" src="assets/images/cross.png">Use atleast 4 alpha characters</div>
+				<div class="pwd-help" id="num-present"><img id="num-present-img" src="assets/images/cross.png">Use atleast 1 number [0-9]</div>
+				<div class="pwd-help" id="special-present"><img id="special-present-img" src="assets/images/cross.png">Use atleast 1 special character [!,@,#,$,%,^,*,?]</div>
+				<div class="pwd-help space-class" id="no-spaces"><img id="no-spaces-img" src="assets/images/tick.png">Must not contain spaces</div>
+			</p>
+
+			<label>Verify Password:</label>
+			<input type="password" name="vpassword" id="vpass" required>
+			<p class="vpass-help" id="vp">Same as password.</p>
+
+			<label>Email:</label>
+			<input type="email" name="nmemail" id="email" required>
+			<p class="email-help"></p>
+
+			<label>Verify Email:</label>
+			<input type="email" name="nmvemail" id="vemail" required>
+			<p class="userid-help"></p>
+
+			<label>Security Question1:</label>
+			<select name="sq1" required id="sq1">
+				<option></option>
+				<option>Sum of 2 + 3 = </option>
+				<option>Sum of 100 + 200 =</option>
+				<option>23 x 100 =</option>
+				<option>Capital of India?</option>
+				<option>Capital of USA?</option>
+			</select>
+
+
+			<label>Security Answer:</label>
+			<input type="text" name="sa2" id="sa1" required>
+			<p class="userid-help">Please enter security answer.</p>
+
+			<label>Security Question2:</label>
+			<select name="sq2" id="sq2" required>
+				<option></option>
+				<option>Sum of 2 + 3 = </option>
+				<option>Sum of 100 + 200 =</option>
+				<option>23 x 100 =</option>
+				<option>Capital of India?</option>
+				<option>Capital of USA?</option>
+			</select>
+
+
+			<label>Security Answer:</label>
+			<input type="text" name="sa2" id="sa2" required>
+			<p class="userid-help">Please enter security answer.</p>
+
+			<label>Mobile:</label>
+			<input type="text" name="mobile" id="mob" pattern="^\d{10}$" required>
+			<p class="userid-help">Please enter your mobile number [10 digits only].</p>
+
+			<label>Address:</label>
+			<textarea rows="5" cols="40" id="add"></textarea>
+
+			<label>Comments:</label>
+			<textarea rows="5" cols="40" id="com"></textarea>
+
+			<h3 class="capInstruction">Captcha:</h3>
+			<h4 class="capInstruction">Please drag and drop MLK image into the drop box:</h4>
+			<div id="capContainer">
+				<img class="captcha" id="cmpe" src="assets/images/cmpe.png" height="100px" width="100px" draggable="true" ondragstart="dragstart_handler(event);">
+				<img class="captcha" id="mlk" src="assets/images/mlk.jpg" height="100px" width="100px" draggable="true" ondragstart="dragstart_handler(event);">
+				<img class="captcha" id="sjsu" src="assets/images/sjsu.png" height="100px" width="100px" draggable="true" ondragstart="dragstart_handler(event);">
+				<div class="target" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">Drop MLK image here!!</div>
+			</div>
+
+			<button id="register" disabled>Register</button>
+
+
+		</form>
+	</section>
+
+	<script>
+		function dragstart_handler(ev) {
+			console.log("dragStart");
+			// Add the target element's id to the data transfer object
+			ev.dataTransfer.setData("text/plain", ev.target.id);
+			ev.dataTransfer.dropEffect = "copy";
+		}
+		function dragover_handler(ev) {
+ 			ev.preventDefault();
+ 			// Set the dropEffect to move
+ 			ev.dataTransfer.dropEffect = "copy"
+		}
+
+		function drop_handler(ev) {
+			console.log("In drop handler");
+			ev.preventDefault();
+ 			// Get the id of the target and add the moved element to the target's DOM
+ 			var data = ev.dataTransfer.getData("text");
+			while (ev.target.firstChild) {
+				ev.target.removeChild(ev.target.firstChild);
+			}
+ 			ev.target.appendChild(document.getElementById(data));
+			if (data ==="mlk"){
+					//$('#capContainer').append('<p>Correct!!</p>');
+					console.log("correct");
+					//var cont = document.getElementById(capContainer);
+					var el = document.createElement('h1');
+					el.textContent= "Correct";
+					ev.target.appendChild(el);
+					enableButton();
+			}
+			else {
+				console.log("wrong");
+				var el = document.createElement('h1');
+				el.textContent= "Wrong";
+				ev.target.appendChild(el);
+			}
+		}
+
+		function enableButton(){
+			console.log("Button enabled");
+			//var button = document.getElementById(register);
+			$('#register').css('opacity','1');
+			$('#register').css('cursor','pointer');
+		}
+
+		window.addEventListener("offline", function(e) {
+  			$('.internet-status').text("You are offline");
+  			$('.internet-status').css('background-color','rgba(255,49,98,0.3)');
+		}, false);
+
+		window.addEventListener("online", function(e) {
+  			$('.internet-status').text("You are online");
+  			$('.internet-status').css('background-color','rgba(118,255,3,0.3)');
+		}, false);
+	</script>
+
+</body>
+</html>

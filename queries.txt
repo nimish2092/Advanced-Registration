@@ -1,0 +1,12 @@
+create table users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    -> userid varchar(50),
+    -> password varchar(50),
+    -> email varchar(50),
+    -> sq1 varchar(50),
+    -> sa1 varchar(50),
+    -> sq2 varchar(50),
+    -> sa2 varchar(50),
+    -> mobile int(10),
+    -> address varchar(50),
+    -> comments varchar(50));
+
